@@ -1,0 +1,26 @@
+{
+  "name": "server",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "nodemon ./bin/www --exec  \"npm run lint:fix && node\"",
+    "lint": "eslint ./**/*.js",
+    "lint:fix": "eslint ./**/*.js  --fix"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "express-session": "^1.17.0",
+    "morgan": "~1.9.1",
+    "mysql": "^2.17.1",
+    "nodemon": "^1.19.4",
+    "passport": "^0.4.0",
+    "passport-oauth": "^1.0.0",
+    "request": "^2.88.0"
+  },
+  "devDependencies": {
+    "eslint": "^6.6.0",
+    "eslint-plugin-vue": "^6.0.1"
+  }
+}
