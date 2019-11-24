@@ -1,24 +1,30 @@
 var express = require('express')
 var router = express.Router()
-var con = require('../database')
-
-async function create (id, name, profile_image) {
-  var sql = "INSERT INTO users (name, twitch_id, profile_image) SELECT * FROM (SELECT '" + name + "', '" + id + "', '" + profile_image + "') AS tmp WHERE NOT EXISTS ( SELECT name FROM streamers WHERE name = '" + name + "' AND twitch_id = '" + id + "' ) LIMIT 1"
-  return new Promise((resolve, reject) => {
-    con.query(sql, function (err) {
-      if (err) {
-        reject(err)
-      } else {
-        resolve()
-      }
-    })
-  })
-}
+var streamersList = require('../middlewares/streamersList')
 
 /* GET home page. */
-router.get('/', async function(req, res) {
-  console.log(await create('12345', 'LesSoyeux', 'test'))
-  res.redirect("http://localhost:8080/")
+router.get('/:id', async function(req, res) {
+  var objStreamerInfo = []
+  var tempObj = {
+    name: null,
+    img: null,
+    followersNb: null
+  }
+
+  const streamersListData = await streamersList.getIdStreamersList(req.params.id)
+
+  for (var i = 0 ; i < streamersListData.length ; i++) {
+    const streamerInfo = await streamersList.getStreamerInfos(streamersListData[i].streamers_id)
+    
+    tempObj = {
+      name: streamerInfo[0].name,
+      img: streamerInfo[0].profile_image,
+      followersNb: streamerInfo[0].followers_nb
+    }
+
+    objStreamerInfo.push(tempObj)
+  }
+  res.send(objStreamerInfo)
 })
 
 module.exports = router

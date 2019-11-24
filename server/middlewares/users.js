@@ -15,6 +15,26 @@ function addUserToDB (name, id, profile_image) {
   })
 }
 
+function checkIfUserExists(id) {
+  return new Promise((resolve, reject) => {
+    // Add streamers to streamers DB
+    var sql = "SELECT * from users WHERE twitch_id='" + id + "'"
+
+    con.query(sql, function (err, results) {
+      if (err) {
+        reject(err)
+      } else {
+        if (typeof results[0] === 'undefined') {
+          resolve(null)
+        } else {
+          resolve(results[0].id)
+        }
+      }
+    })
+  })
+}
+
 module.exports = {
-  addUserToDB
+  addUserToDB,
+  checkIfUserExists
 }

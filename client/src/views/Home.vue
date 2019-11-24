@@ -32,7 +32,6 @@
 </template>
 
 <script>
-import Auth from '@/services/Auth'
 
 export default {
   name: 'home',
@@ -43,31 +42,6 @@ export default {
       id: '',
       logged: false,
       followsArray: []
-    }
-  },
-  methods: {
-    async test () {
-      const response = await Auth.test()
-      /* eslint-disable no-console */
-      console.log(response.data)
-    },
-    async followers () {
-      const response = await Auth.followers()
-      /* eslint-disable no-console */
-      console.log(response.data)
-    },
-    async flush () {
-      const response = await Auth.flush()
-      /* eslint-disable no-console */
-      console.log(response.data)
-    },
-    async getUserFollows () {
-      const response = await Auth.userFollows(this.id)
-      /* eslint-disable no-console */
-      for (var i =0 ; i < response.data.length ; i++){
-        const follow = await Auth.getStreamer(response.data[i].streamers_id)
-        this.followsArray.push(follow.data[0].name)
-      }
     }
   },
   mounted: function () {

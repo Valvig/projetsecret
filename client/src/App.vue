@@ -1,14 +1,22 @@
 <template>
   <div id="app">
     <v-app>
-      <div id="nav">
-        <router-link to="/">Home</router-link> |
-        <router-link to="/about">About</router-link>
-      </div>
+      <app-menu></app-menu>
       <router-view/>
     </v-app>
   </div>
 </template>
+
+<script>
+  import AppMenu from './components/AppMenu'
+
+  export default {
+  name: 'app',
+  components: {
+    AppMenu
+  }
+}
+</script>
 
 <style lang="scss">
 #app {

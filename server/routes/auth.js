@@ -6,6 +6,8 @@ const passport = require('passport')
 var twitch = require('../src/secret/index')
 
 var usersFunctions = require('../middlewares/users')
+var streamersFunctions = require('../middlewares/streamers')
+var updateStreamersFunctions = require('../middlewares/updateStreamers')
 
 // Override passport profile function to get user profile from Twitch API
 OAuth2Strategy.prototype.userProfile = function(accessToken, done) {
@@ -56,11 +58,28 @@ passport
 router.get('/', passport.authenticate('twitch', {scope:'user_read'}))
 router.get('/callback', passport.authenticate("twitch"), async function(req,res) {
   // Successful authentication, redirect home after setting user datas into a cookie
-  res.cookie('userId', req.user.data[0].id)
-  res.cookie('userName', req.user.data[0].display_name)
-  res.cookie('userProfileImage', req.user.data[0].profile_image_url)
+  var id = req.user.data[0].id
+  var displayName = req.user.data[0].display_name
+  var profileImgUrl = req.user.data[0].profile_image_url
+  res.cookie('userId', id)
+  res.cookie('userName', displayName)
+  res.cookie('userProfileImage', profileImgUrl)
 
-  usersFunctions.addUserToDB(req.user.data[0].display_name, req.user.data[0].id, req.user.data[0].profile_image_url)
+  // eslint-disable-next-line
+  const checkUserInDB = await usersFunctions.checkIfUserExists(id)
+
+  if (checkUserInDB !== null) {
+    console.log('Already in DB')
+  } else {
+    // eslint-disable-next-line
+    const userToDB = await usersFunctions.addUserToDB(displayName, id, profileImgUrl)
+
+    // eslint-disable-next-line
+    const streamersArray = await streamersFunctions.updateDBWithFollowsData(id, '', [])
+
+    // eslint-disable-next-line
+    const updateStreamers = await updateStreamersFunctions.updateEveryStreamersProfileImgInDB(streamersArray)
+  }
 
   res.redirect("http://localhost:8080/")
 })
