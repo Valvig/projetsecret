@@ -5,7 +5,7 @@
       Bienvenue {{name}}
     </div>
     <div v-else>
-      <p>Merci de vous connecter avec me bouton suivant : </p>
+      <p>Merci de vous connecter avec le bouton suivant : </p>
       <v-btn
         class="ma-2"
         color="secondary"

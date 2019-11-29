@@ -9,7 +9,7 @@
         <router-link to="/">
           Home
         </router-link>
-        <router-link to="/about">
+        <router-link to="about">
           Voter
         </router-link>
       </v-toolbar-items>
