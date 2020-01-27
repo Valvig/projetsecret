@@ -1,20 +1,42 @@
 <template>
-  <div>
-    <div v-if="show">
-      <following-list :streamers="streamers"></following-list>
+  <v-container 
+    v-if="show"
+    class="aboutContainer"
+  >
+    <div>
+      <Adsense
+        data-ad-test>
+      </Adsense>
     </div>
-  </div>
+    <v-row>
+      <v-col
+        :cols=12
+      >
+        <following-list :streamers="streamers"></following-list>
+      </v-col>
+      <!-- <v-col
+        :cols=5
+      >
+        <stream-vote-list :streamers="streamers"
+          class="templateStreamVoteList"
+        >
+        </stream-vote-list>
+      </v-col> -->
+    </v-row>
+  </v-container>
 </template>
 
 <script>
 import Axios from 'axios'
 
 import FollowingList from '@/components/FollowingList'
+// import StreamVoteList from '@/components/StreamVoteList'
 
 export default {
   name: 'about',
   components: {
-    FollowingList
+    FollowingList,
+    // StreamVoteList
   },
   data () {
     return {
@@ -43,3 +65,13 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+  .aboutContainer {
+    max-width: 100%;
+  }
+
+  .templateStreamVoteList{
+    position: fixed;
+  }
+</style>
